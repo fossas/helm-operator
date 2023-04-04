@@ -1,3 +1,11 @@
+# fossas/helm-operator
+
+This is a fork of the Flux v1 [Helm Operator](https://github.com/fluxcd/helm-operator) that has been updated to include GitHub's new [SSH host key](https://github.blog/2023-03-23-we-updated-our-rsa-ssh-host-key/).
+
+Original README is preserved below.
+
+---
+
 # Helm Operator
 
 This repository contains the source code of the Helm Operator, part of Flux
