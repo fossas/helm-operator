@@ -87,7 +87,7 @@ jobs:
           name: Maybe push release image
           command: |
             if echo "${CIRCLE_TAG}" | grep -Eq "^v[0-9]+(\.[0-9]+)*(-[a-z0-9.]+)?$"; then
-              echo "$DOCKER_FLUXCD_PASSWORD" | docker login --username "$DOCKER_FLUXCD_USER" --password-stdin
+              echo "$DOCKER_FLUXCD_PASSWORD" | docker login quay.io --username "$DOCKER_FLUXCD_USER" --password-stdin
               docker push "quay.io/fossa/helm-operator:$(docker/image-tag)"
             fi
 
