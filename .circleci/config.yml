@@ -84,38 +84,11 @@ jobs:
           paths:
             - "~/go/pkg/mod/"
       - deploy:
-          name: Maybe push prerelease images
-          command: |
-            if [ -z "${CIRCLE_TAG}" -a "${CIRCLE_BRANCH}" == "master" ]; then
-              echo "$DOCKER_FLUXCD_PASSWORD" | docker login --username "$DOCKER_FLUXCD_USER" --password-stdin
-
-              docker tag "docker.io/fluxcd/helm-operator:$(docker/image-tag)" "docker.io/fluxcd/helm-operator-prerelease:$(docker/image-tag)"
-              docker push "docker.io/fluxcd/helm-operator-prerelease:$(docker/image-tag)"
-            fi
-            if [ -z "${CIRCLE_TAG}" -a "${CIRCLE_BRANCH}" == "helm-v3-dev" ]; then
-              echo "$DOCKER_FLUXCD_PASSWORD" | docker login --username "$DOCKER_FLUXCD_USER" --password-stdin
-
-              docker tag "docker.io/fluxcd/helm-operator:$(docker/image-tag)" "docker.io/fluxcd/helm-operator-prerelease:$(docker/image-tag)"
-              docker push "docker.io/fluxcd/helm-operator-prerelease:$(docker/image-tag)"
-            fi
-      - deploy:
           name: Maybe push release image
           command: |
-            if echo "${CIRCLE_TAG}" | grep -Eq "^v[0-9]+(\.[0-9]+)*(-[a-z0-9]+)?$"; then
-              echo "$DOCKER_FLUXCD_PASSWORD" | docker login --username "$DOCKER_FLUXCD_USER" --password-stdin
-              docker push "docker.io/fluxcd/helm-operator:$(docker/image-tag)"
-
-              # Republish tag _without_ the `v` prefix, for historical reasons
-              git config --global user.email fluxcdbot@users.noreply.github.com
-              git config --global user.name fluxcdbot
-
-              REPOSITORY="https://fluxcdbot:${GITHUB_TOKEN}@github.com/fluxcd/helm-operator.git"
-              git remote set-url origin ${REPOSITORY}
-
-              # Remove `v` prefix using bash string manipulation
-              VLESS_TAG=${CIRCLE_TAG#v}
-              git tag ${VLESS_TAG} $(git rev-list -n1 ${CIRCLE_TAG})
-              git push origin ${VLESS_TAG}
+            if echo "${CIRCLE_TAG}" | grep -Eq "^v[0-9]+(\.[0-9]+)*(-[a-z0-9.]+)?$"; then
+              echo "$DOCKER_FLUXCD_PASSWORD" | docker login quay.io --username "$DOCKER_FLUXCD_USER" --password-stdin
+              docker push "quay.io/fossa/helm-operator:$(docker/image-tag)"
             fi
 
 workflows:
@@ -125,4 +98,4 @@ workflows:
       - build:
           filters:
             tags:
-              only: /v[0-9]+(\.[0-9]+)*(-[a-z0-9]+)?/
+              only: /v[0-9]+(\.[0-9]+)*(-[a-z0-9.]+)?/
