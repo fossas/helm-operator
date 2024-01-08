@@ -2,12 +2,11 @@ package operator
 
 import (
 	"fmt"
+	"github.com/fluxcd/helm-operator/pkg/chartsync"
 	"os"
 	"path"
 	"sync"
 	"time"
-
-	"github.com/fluxcd/helm-operator/pkg/chartsync"
 
 	"github.com/go-kit/kit/log"
 	"github.com/google/go-cmp/cmp"
@@ -22,13 +21,13 @@ import (
 	"k8s.io/client-go/tools/record"
 	"k8s.io/client-go/util/workqueue"
 
+	"github.com/fluxcd/helm-operator/internal/lockedfile"
 	helmfluxv1 "github.com/fluxcd/helm-operator/pkg/apis/helm.fluxcd.io/v1"
 	ifscheme "github.com/fluxcd/helm-operator/pkg/client/clientset/versioned/scheme"
 	hrv1 "github.com/fluxcd/helm-operator/pkg/client/informers/externalversions/helm.fluxcd.io/v1"
 	iflister "github.com/fluxcd/helm-operator/pkg/client/listers/helm.fluxcd.io/v1"
 	"github.com/fluxcd/helm-operator/pkg/release"
 	"github.com/fluxcd/helm-operator/pkg/status"
-	"github.com/fossas/helm-operator/internal/lockedfile"
 )
 
 const (
@@ -200,8 +199,7 @@ func (c *Controller) processNextWorkItem() bool {
 }
 
 // syncHandler acts according to the action
-//
-//	Deletes/creates or updates a Chart release
+// 		Deletes/creates or updates a Chart release
 func (c *Controller) syncHandler(key string) error {
 	// Retrieve namespace and Custom Resource name from the key
 	namespace, name, err := cache.SplitMetaNamespaceKey(key)

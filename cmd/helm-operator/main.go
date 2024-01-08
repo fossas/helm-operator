@@ -28,10 +28,10 @@ import (
 	helmv3 "github.com/fluxcd/helm-operator/pkg/helm/v3"
 	v3 "github.com/fluxcd/helm-operator/pkg/helm/v3"
 	daemonhttp "github.com/fluxcd/helm-operator/pkg/http/daemon"
+	"github.com/fluxcd/helm-operator/pkg/operator"
 	"github.com/fluxcd/helm-operator/pkg/release"
 	"github.com/fluxcd/helm-operator/pkg/status"
 	"github.com/fluxcd/helm-operator/pkg/utils"
-	"github.com/fossas/helm-operator/pkg/operator"
 )
 
 var (

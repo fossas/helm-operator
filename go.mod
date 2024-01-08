@@ -1,12 +1,9 @@
-module github.com/fossas/helm-operator
+module github.com/fluxcd/helm-operator
 
 go 1.21
 
-replace github.com/fluxcd/helm-operator => ./
-
 require (
 	github.com/fluxcd/flux v1.17.2-0.20200121140732-3903cf8e71c3
-	github.com/fluxcd/helm-operator v1.4.2
 	github.com/fluxcd/helm-operator/pkg/install v0.0.0-00010101000000-000000000000
 	github.com/go-kit/kit v0.12.0
 	github.com/golang/protobuf v1.5.2
